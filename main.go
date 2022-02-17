@@ -7,7 +7,7 @@ import (
 )
 
 type PasswordCreater interface {
-	Create()
+	Create() string
 }
 
 type LowerAlphabetType struct {
@@ -20,6 +20,10 @@ func NewLowerAlphabet() *LowerAlphabetType {
 	return la
 }
 
+func (s LowerAlphabetType) Create() string {
+	return PickPasswordStr(s.UsableStr)
+}
+
 type UpperAlphabetType struct {
 	UsableStr []string
 }
@@ -30,14 +34,22 @@ func NewUpperAlphabet() *UpperAlphabetType {
 	return ua
 }
 
+func (s UpperAlphabetType) Create() string {
+	return PickPasswordStr(s.UsableStr)
+}
+
 type SignType struct {
 	UsableStr []string
 }
 
 func NewSign() *SignType {
 	s := new(SignType)
-	s.UsableStr = []string{"!", "#", "$", "%", "&", "'", "(", ")", "-", "^", "@", "[", ";", ":", "]", ",", ".", "/", "=", "~", "|", "`", "{", "+", "*", "}", "<", ">", "?", "_"}
+	s.UsableStr = []string{"!", "#", "$", "%", "&", "'", "(", ")", "-", "^", "@", "[", ";", ":", "]", ",", ".", "/", "=", "|", "`", "{", "+", "*", "}", "<", ">", "?", "_"}
 	return s
+}
+
+func (s SignType) Create() string {
+	return PickPasswordStr(s.UsableStr)
 }
 
 type NumberType struct {
@@ -50,16 +62,26 @@ func NewNumber() *NumberType {
 	return n
 }
 
+func (s NumberType) Create() string {
+	return PickPasswordStr(s.UsableStr)
+}
+
+func PickPasswordStr(s []string) string {
+	strLength := int64(len(s))
+	n, _ := rand.Int(rand.Reader, big.NewInt(strLength))
+	return s[n.Int64()]
+}
+
 func main() {
-	// TODO 設定ファイルに外だし
-	// passwordLength := 12
-	// partPasswordLength := 4
+	// TODO 設定外だし
+	passwordLength := 12
+	creators := []PasswordCreater{NewLowerAlphabet(), NewUpperAlphabet(), NewSign(), NewNumber()}
+	passwordStr := ""
 
-	//ps := NewPasswordString()
-
-	n, err := rand.Int(rand.Reader, big.NewInt(4))
-	if err != nil {
-		return
+	for i := 0; i < passwordLength; i++ {
+		n, _ := rand.Int(rand.Reader, big.NewInt(4))
+		passwordStr = passwordStr + creators[n.Int64()].Create()
 	}
-	fmt.Println(n)
+
+	fmt.Println(passwordStr)
 }
