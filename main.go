@@ -100,11 +100,9 @@ func main() {
 
 	for i := 0; i < *passwordLength; i++ {
 		n, _ := rand.Int(rand.Reader, big.NewInt(tn))
-		passwordStr = passwordStr + creators[n.Int64()].Create()
+		passPartStr := creators[n.Int64()].Create()
+		passwordStr = passwordStr + passPartStr
 	}
 
 	fmt.Println(passwordStr)
-	fmt.Println(*length)
-	fmt.Println(*isNoNum)
-	fmt.Println(*isNoSign)
 }
