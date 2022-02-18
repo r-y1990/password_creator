@@ -2,6 +2,7 @@ package main
 
 import (
 	"crypto/rand"
+	"flag"
 	"fmt"
 	"math/big"
 )
@@ -72,16 +73,38 @@ func PickPasswordStr(s []string) string {
 	return s[n.Int64()]
 }
 
+var (
+	length   = flag.Int("l", 12, "Password Length")
+	isNoSign = flag.Bool("ns", false, "Password not include sign.")
+	isNoNum  = flag.Bool("nn", false, "Password not include number.")
+)
+
 func main() {
+	flag.Parse()
+
 	// TODO 設定外だし
-	passwordLength := 12
-	creators := []PasswordCreater{NewLowerAlphabet(), NewUpperAlphabet(), NewSign(), NewNumber()}
+	passwordLength := length
+	creators := []PasswordCreater{NewLowerAlphabet(), NewUpperAlphabet()}
+
+	if !*isNoSign {
+		creators = append(creators, NewSign())
+	}
+
+	if !*isNoNum {
+		creators = append(creators, NewNumber())
+	}
+
+	tn := int64(len(creators))
+
 	passwordStr := ""
 
-	for i := 0; i < passwordLength; i++ {
-		n, _ := rand.Int(rand.Reader, big.NewInt(4))
+	for i := 0; i < *passwordLength; i++ {
+		n, _ := rand.Int(rand.Reader, big.NewInt(tn))
 		passwordStr = passwordStr + creators[n.Int64()].Create()
 	}
 
 	fmt.Println(passwordStr)
+	fmt.Println(*length)
+	fmt.Println(*isNoNum)
+	fmt.Println(*isNoSign)
 }
