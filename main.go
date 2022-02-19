@@ -5,6 +5,7 @@ import (
 	"flag"
 	"fmt"
 	"math/big"
+	"strings"
 )
 
 type PasswordCreater interface {
@@ -73,6 +74,7 @@ func PickPasswordStr(s []string) string {
 	return s[n.Int64()]
 }
 
+// Parameters
 var (
 	length   = flag.Int("l", 12, "Password Length")
 	isNoSign = flag.Bool("ns", false, "Password not include sign.")
@@ -101,8 +103,14 @@ func main() {
 	for i := 0; i < *passwordLength; i++ {
 		n, _ := rand.Int(rand.Reader, big.NewInt(tn))
 		passPartStr := creators[n.Int64()].Create()
+		fmt.Print(strings.Count(passwordStr, passPartStr))
+		// 同じ文字列は2文字以上含まないようにする
+		if 2 < strings.Count(passwordStr, passPartStr) {
+			fmt.Printf("(%s)", passPartStr)
+			i--
+			continue
+		}
 		passwordStr = passwordStr + passPartStr
 	}
-
 	fmt.Println(passwordStr)
 }
