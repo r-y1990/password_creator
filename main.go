@@ -1,10 +1,12 @@
 package main
 
 import (
+	"bufio"
 	"crypto/rand"
 	"flag"
 	"fmt"
 	"math/big"
+	"os"
 	"strings"
 )
 
@@ -81,6 +83,12 @@ var (
 	isNoNum  = flag.Bool("nn", false, "Password not include number.")
 )
 
+func InputWait(c chan string) {
+	sc := bufio.NewScanner(os.Stdin)
+	sc.Scan()
+	c <- sc.Text()
+}
+
 func main() {
 	flag.Parse()
 
@@ -113,4 +121,8 @@ func main() {
 		passwordStr = passwordStr + passPartStr
 	}
 	fmt.Println(passwordStr)
+	c := make(chan string, 1)
+
+	go InputWait(c)
+	<-c
 }
