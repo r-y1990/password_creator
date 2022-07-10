@@ -15,59 +15,59 @@ type PasswordCreater interface {
 }
 
 type LowerAlphabetType struct {
-	UsableStr []string
+	AllowedStr []string
 }
 
 func NewLowerAlphabet() *LowerAlphabetType {
 	la := new(LowerAlphabetType)
-	la.UsableStr = []string{"a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z"}
+	la.AllowedStr = []string{"a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z"}
 	return la
 }
 
 func (s LowerAlphabetType) Create() string {
-	return PickPasswordStr(s.UsableStr)
+	return PickPasswordStr(s.AllowedStr)
 }
 
 type UpperAlphabetType struct {
-	UsableStr []string
+	AllowedStr []string
 }
 
 func NewUpperAlphabet() *UpperAlphabetType {
 	ua := new(UpperAlphabetType)
-	ua.UsableStr = []string{"A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z"}
+	ua.AllowedStr = []string{"A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z"}
 	return ua
 }
 
 func (s UpperAlphabetType) Create() string {
-	return PickPasswordStr(s.UsableStr)
+	return PickPasswordStr(s.AllowedStr)
 }
 
 type SignType struct {
-	UsableStr []string
+	AllowedStr []string
 }
 
 func NewSign() *SignType {
 	s := new(SignType)
-	s.UsableStr = []string{"!", "#", "$", "%", "&", "'", "(", ")", "-", "^", "@", "[", ";", ":", "]", ",", ".", "/", "=", "|", "`", "{", "+", "*", "}", "<", ">", "?", "_"}
+	s.AllowedStr = []string{"!", "#", "$", "%", "&", "'", "(", ")", "-", "^", "@", "[", ";", ":", "]", ",", ".", "/", "=", "|", "`", "{", "+", "*", "}", "<", ">", "?", "_"}
 	return s
 }
 
 func (s SignType) Create() string {
-	return PickPasswordStr(s.UsableStr)
+	return PickPasswordStr(s.AllowedStr)
 }
 
 type NumberType struct {
-	UsableStr []string
+	AllowedStr []string
 }
 
 func NewNumber() *NumberType {
 	n := new(NumberType)
-	n.UsableStr = []string{"0", "1", "2", "3", "4", "5", "6", "7", "8", "9"}
+	n.AllowedStr = []string{"0", "1", "2", "3", "4", "5", "6", "7", "8", "9"}
 	return n
 }
 
 func (s NumberType) Create() string {
-	return PickPasswordStr(s.UsableStr)
+	return PickPasswordStr(s.AllowedStr)
 }
 
 func PickPasswordStr(s []string) string {
