@@ -111,10 +111,10 @@ func main() {
 	for i := 0; i < *passwordLength; i++ {
 		n, _ := rand.Int(rand.Reader, big.NewInt(tn))
 		passPartStr := creators[n.Int64()].Create()
-		fmt.Print(strings.Count(passwordStr, passPartStr))
+		//fmt.Print(strings.Count(passwordStr, passPartStr))
 		// 同じ文字列は2文字以上含まないようにする
 		if 2 < strings.Count(passwordStr, passPartStr) {
-			fmt.Printf("(%s)", passPartStr)
+			// fmt.Printf("(%s)", passPartStr)
 			i--
 			continue
 		}
